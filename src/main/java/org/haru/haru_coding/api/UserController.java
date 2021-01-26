@@ -31,16 +31,22 @@ public class UserController {
     /**
      * 회원가입(프로필없는 타입)
      */
-    @PostMapping("user/signup")
-    public ResponseEntity signup(@RequestBody final User user){
-        try{
-            return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
-        } catch (Exception e){
-            log.error(e.getMessage());
-            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("user/signup")
+//    public ResponseEntity signup(@RequestBody final User user){
+//        try{
+//            return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+//        } catch (Exception e){
+//            log.error(e.getMessage());
+//            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
+    /**
+     * 회원가입
+     * @param signUpReq
+     * @param profile
+     * @return
+     */
     @PostMapping("user/signUp")
     public ResponseEntity signup_profile(
             SignUpReq signUpReq,
@@ -86,6 +92,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 회원 정보 수정
+     * @param token
+     * @param userChangeReq
+     * @return
+     */
     @PutMapping("user")
     public ResponseEntity update_user(
             @RequestHeader(value = "Authorization") String token,
@@ -118,6 +130,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 전체 프로그래머 수 조회
+     * @return
+     */
     @GetMapping("user/usernum")
     public ResponseEntity getAllUsersNum(){
         try{
