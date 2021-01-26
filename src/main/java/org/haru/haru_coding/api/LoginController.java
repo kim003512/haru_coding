@@ -28,6 +28,11 @@ public class LoginController {
         this.userMapper = userMapper;
     }
 
+    /**
+     * 로그인
+     * @param loginReq
+     * @return
+     */
     @PostMapping("user/signin")
     public ResponseEntity login(@RequestBody final LoginReq loginReq){
         try{
