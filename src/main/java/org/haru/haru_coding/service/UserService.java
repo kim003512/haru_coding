@@ -5,7 +5,9 @@ import org.haru.haru_coding.dto.User;
 import org.haru.haru_coding.dto.UserNotProfile;
 import org.haru.haru_coding.mapper.UserMapper;
 import org.haru.haru_coding.model.DefaultRes;
+import org.haru.haru_coding.model.RankingRes;
 import org.haru.haru_coding.model.SignUpReq;
+import org.haru.haru_coding.model.UserChangeReq;
 import org.haru.haru_coding.utils.ResponseMessage;
 import org.haru.haru_coding.utils.StatusCode;
 import org.springframework.stereotype.Service;
@@ -80,34 +82,39 @@ public class UserService {
         }
     }
 
-    public DefaultRes user_update(final int userIdx, final User user, final MultipartFile profile) {
+    public DefaultRes user_update_profile(final int userIdx, final MultipartFile profile) {
         if (userMapper.findByUidx(userIdx) != null) {
             try {
-                User myUser = userMapper.findByUidx(userIdx);
+                String profileUrl = s3FileUploadService.upload(profile);
 
-                if(myUser == null)
-                    return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER);
+                userMapper.updateUserProfile(profileUrl);
 
-
-
-                if(user.getName() != null) myUser.setName(user.getName());
-                if(user.getEmail() != null) myUser.setEmail(user.getEmail());
-                if(user.getProfileUrl() != null){
-                    myUser.setProfileUrl(s3FileUploadService.upload(user.getProfile()));
-
-                    userMapper.updateUser(userIdx, myUser);
-
-                    return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER);
-                }
-
+                return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_PROFILE);
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 log.error(e.getMessage());
                 return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
             }
         }
-        return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
+        return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
     }
+
+    public DefaultRes update_user(final int userIdx, final UserChangeReq userChangeReq){
+        UserChangeReq user = userMapper.findByUidx_userchange(userIdx);
+
+        if(userMapper.findByUidx(userIdx) != null){
+            if(userChangeReq.getName() == null) userChangeReq.setName(userMapper.findByUidx(userIdx).getName());
+            if(userChangeReq.getPw() == null) userChangeReq.setPw(userMapper.findByUidx(userIdx).getPw());
+            if(userChangeReq.getEmail() == null) userChangeReq.setEmail(userMapper.findByUidx(userIdx).getEmail());
+            if(userChangeReq.getStar() == null) userChangeReq.setStar(String.valueOf(userMapper.findByUidx(userIdx).getStar()));
+
+            userMapper.updateUser(userIdx, userChangeReq);
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER);
+        }
+        return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+    }
+
 
     public DefaultRes findUser(final int userIdx){
         final User user = userMapper.findByUidx(userIdx);
@@ -129,13 +136,13 @@ public class UserService {
      * @return
      */
     @Transactional
-    public DefaultRes<List<User>> RankingOfAllUsers(){
-        List<User> userList = userMapper.listOfAllRanking();
+    public DefaultRes<List<RankingRes>> RankingOfAllUsers(){
+        List<RankingRes> rankingRes = userMapper.listOfAllRanking();
 
-        if(userList.isEmpty())
+        if(rankingRes.isEmpty())
             return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER);
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, userList);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, rankingRes);
     }
 
     @Transactional

@@ -4,7 +4,9 @@ import org.apache.ibatis.annotations.*;
 import org.haru.haru_coding.dto.User;
 import org.haru.haru_coding.dto.UserNotProfile;
 import org.haru.haru_coding.model.LoginReq;
+import org.haru.haru_coding.model.RankingRes;
 import org.haru.haru_coding.model.SignUpReq;
+import org.haru.haru_coding.model.UserChangeReq;
 
 import java.util.List;
 
@@ -34,6 +36,9 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE userIdx = #{userIdx}")
     UserNotProfile findByUidx_profile(@Param("userIdx") final int userIdx);
 
+    @Select("SELECT * FROM user WHERE userIdx = #{userIdx}")
+    UserChangeReq findByUidx_userchange(@Param("userIdx") final int userIdx);
+
     /**
      * 아이디와 비밀번호로 조회
      * @param loginReq
@@ -53,17 +58,20 @@ public interface UserMapper {
     /**
      * 회원정보수정
      * @param userIdx
-     * @param user
+     * @param userChangeReq
      */
-    @Update("UPDATE user SET name = #{user.name}, email = #{user.email}, profileUrl = #{user.profileUrl}")
-    void updateUser(@Param("userIdx") final int userIdx, @Param("user") final User user);
+    @Update("UPDATE user SET name = #{userChangeReq.name}, pw=#{userChangeReq.pw}, email = #{userChangeReq.email}, star = #{userChangeReq.star}")
+    void updateUser(@Param("userIdx") final int userIdx, @Param("userChangeReq") final UserChangeReq userChangeReq);
+
+    @Update("UPDATE user SET profileUrl = #{profileUrl}")
+    void updateUserProfile(@Param("profileUrl") final String profileUrl);
 
     /**
      * 전체 사용자 star순으로 조회
      * @return
      */
-    @Select("SELECT * FROM user ORDER BY star")
-    List<User> listOfAllRanking();
+    @Select("SELECT * FROM user ORDER BY star DESC")
+    List<RankingRes> listOfAllRanking();
 
     @Select("SELECT * FROM user")
     List<User> allUserNum();

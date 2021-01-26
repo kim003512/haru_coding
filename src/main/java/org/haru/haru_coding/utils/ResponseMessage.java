@@ -6,6 +6,8 @@ public class ResponseMessage {
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String ALREADY_USER = "이미 존재하는 id입니다.";
 
+    public static final String UPDATE_PROFILE = "프로필 수정 완료";
+
     public static final String CREATED_QUESTION = "문제를 추가하였습니다";
     public static final String FIND_QUESTION = "문제를 조회하였습니다.";
     public static final String NO_QUESTION = "존재하지 않는 문제입니다.";

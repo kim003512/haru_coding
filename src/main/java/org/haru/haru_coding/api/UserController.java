@@ -2,9 +2,10 @@ package org.haru.haru_coding.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.haru.haru_coding.dto.User;
-import org.haru.haru_coding.dto.UserNotProfile;
 import org.haru.haru_coding.model.DefaultRes;
+import org.haru.haru_coding.model.RankingRes;
 import org.haru.haru_coding.model.SignUpReq;
+import org.haru.haru_coding.model.UserChangeReq;
 import org.haru.haru_coding.service.JwtService;
 import org.haru.haru_coding.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -68,40 +69,36 @@ public class UserController {
     /**
      * 프로필 수정
      * @param token
-     * @param user
      * @param profile
      * @return
      */
-    @PutMapping("user")
-    public ResponseEntity update_user(
+    @PutMapping("userprofile")
+    public ResponseEntity update_user_profile(
             @RequestHeader(value = "Authorization") String token,
-            User user,
             @RequestPart(value = "profile", required = false) final MultipartFile profile){
         try{
             int userIdx = jwtService.decode(token).getUser_idx();
 
-            if(profile != null) user.setProfile(profile);
-
-            return new ResponseEntity<>(userService.user_update(userIdx, user, profile), HttpStatus.OK);
+            return new ResponseEntity<>(userService.user_update_profile(userIdx, profile), HttpStatus.OK);
         }catch (Exception e){
             log.error(e.getMessage());
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-//    @PutMapping("user")
-//    public ResponseEntity update_user(
-//            @RequestHeader(value = "Authorization") String token,
-//            @RequestBody final UserNotProfile userProuserNotProfileile){
-//        try{
-//            int userIdx = jwtService.decode(token).getUser_idx();
-//
-//            return new ResponseEntity<>(userService.user_update(userIdx, userProuserNotProfileile), HttpStatus.OK);
-//        } catch (Exception e){
-//            log.error(e.getMessage());
-//            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PutMapping("user")
+    public ResponseEntity update_user(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody final UserChangeReq userChangeReq){
+        try{
+            int userIdx = jwtService.decode(token).getUser_idx();
+
+            return new ResponseEntity<>(userService.update_user(userIdx, userChangeReq), HttpStatus.OK);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * 모든 유저 랭킹 조회
@@ -111,7 +108,7 @@ public class UserController {
     public ResponseEntity getAllUserRaking(){
         try{
             log.info("모든 유저 랭킹 조회 성공");
-            DefaultRes<List<User>> defaultRes = userService.RankingOfAllUsers();
+            DefaultRes<List<RankingRes>> defaultRes = userService.RankingOfAllUsers();
 
             return new ResponseEntity<>(defaultRes, HttpStatus.OK);
         } catch (Exception e){
