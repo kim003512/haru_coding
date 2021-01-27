@@ -7,6 +7,7 @@ import org.haru.haru_coding.model.LoginReq;
 import org.haru.haru_coding.model.RankingRes;
 import org.haru.haru_coding.model.SignUpReq;
 import org.haru.haru_coding.model.UserChangeReq;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -73,6 +74,16 @@ public interface UserMapper {
     @Select("SELECT * FROM user ORDER BY star DESC")
     List<RankingRes> listOfAllRanking();
 
+    /**
+     * 모든 프로그래머 수 조회
+     * @return
+     */
     @Select("SELECT * FROM user")
     List<User> allUserNum();
+
+    @Select("SELECT star FROM user WHERE userIdx = #{userIdx}")
+    int getStar(@Param("userIdx") final int userIdx);
+
+    @Update("Update user SET star=#{star} WHERE userIdx = #{userIdx}")
+    int save_star(@Param("star") final int star, @Param("userIdx") final int userIdx);
 }

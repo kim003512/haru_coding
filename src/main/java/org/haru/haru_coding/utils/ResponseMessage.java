@@ -8,6 +8,8 @@ public class ResponseMessage {
 
     public static final String UPDATE_PROFILE = "프로필 수정 완료";
 
+    public static final String ALREADY_QUESTION = "이미 존재하는 문제입니다. 정답 상태를 변경해주세요.";
+
     public static final String CREATED_QUESTION = "문제를 추가하였습니다";
     public static final String FIND_QUESTION = "문제를 조회하였습니다.";
     public static final String NO_QUESTION = "존재하지 않는 문제입니다.";

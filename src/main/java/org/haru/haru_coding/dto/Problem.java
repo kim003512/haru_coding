@@ -7,4 +7,6 @@ public class Problem {
     private int userIdx;
     private int quest;
     private int answer;
+    private String category;
+    private int questIdx;
 }
