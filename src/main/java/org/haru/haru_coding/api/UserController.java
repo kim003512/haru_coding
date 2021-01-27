@@ -47,7 +47,7 @@ public class UserController {
      * @param profile
      * @return
      */
-    @PostMapping("user/signUp")
+    @PostMapping("user/signup")
     public ResponseEntity signup_profile(
             SignUpReq signUpReq,
             @RequestPart(value = "profile", required = false) final MultipartFile profile){
@@ -147,6 +147,4 @@ public class UserController {
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

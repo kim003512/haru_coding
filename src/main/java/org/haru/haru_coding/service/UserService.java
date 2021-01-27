@@ -102,7 +102,13 @@ public class UserService {
     public DefaultRes update_user(final int userIdx, final UserChangeReq userChangeReq){
         UserChangeReq user = userMapper.findByUidx_userchange(userIdx);
 
+
         if(userMapper.findByUidx(userIdx) != null){
+            if(userChangeReq.getName() != null){
+                String name = userMapper.findByName_same(userChangeReq.getName());
+
+                if(name != null) return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.ALREADY_USER);
+            }
             if(userChangeReq.getName() == null) userChangeReq.setName(userMapper.findByUidx(userIdx).getName());
             if(userChangeReq.getPw() == null) userChangeReq.setPw(userMapper.findByUidx(userIdx).getPw());
             if(userChangeReq.getEmail() == null) userChangeReq.setEmail(userMapper.findByUidx(userIdx).getEmail());

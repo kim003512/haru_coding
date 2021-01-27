@@ -61,12 +61,15 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE name = #{name}")
     User findByName(@Param("name") final String name);
 
+    @Select("SELECT * FROM user WHERE name = #{name}")
+    String findByName_same(@Param("name") final String name);
+
     /**
      * 회원정보수정
      * @param userIdx
      * @param userChangeReq
      */
-    @Update("UPDATE user SET name = #{userChangeReq.name}, pw=#{userChangeReq.pw}, email = #{userChangeReq.email}, star = #{userChangeReq.star}")
+    @Update("UPDATE user SET name = #{userChangeReq.name}, pw=#{userChangeReq.pw}, email = #{userChangeReq.email}, star = #{userChangeReq.star} WHERE userIdx = #{userIdx}")
     void updateUser(@Param("userIdx") final int userIdx, @Param("userChangeReq") final UserChangeReq userChangeReq);
 
     /**
