@@ -37,6 +37,11 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE userIdx = #{userIdx}")
     UserNotProfile findByUidx_profile(@Param("userIdx") final int userIdx);
 
+    /**
+     *
+     * @param userIdx
+     * @return
+     */
     @Select("SELECT * FROM user WHERE userIdx = #{userIdx}")
     UserChangeReq findByUidx_userchange(@Param("userIdx") final int userIdx);
 
@@ -64,6 +69,10 @@ public interface UserMapper {
     @Update("UPDATE user SET name = #{userChangeReq.name}, pw=#{userChangeReq.pw}, email = #{userChangeReq.email}, star = #{userChangeReq.star}")
     void updateUser(@Param("userIdx") final int userIdx, @Param("userChangeReq") final UserChangeReq userChangeReq);
 
+    /**
+     * 회원 프로필 수정
+     * @param profileUrl
+     */
     @Update("UPDATE user SET profileUrl = #{profileUrl}")
     void updateUserProfile(@Param("profileUrl") final String profileUrl);
 
@@ -81,9 +90,20 @@ public interface UserMapper {
     @Select("SELECT * FROM user")
     List<User> allUserNum();
 
+    /**
+     * 사용자 star 얻어오기
+     * @param userIdx
+     * @return
+     */
     @Select("SELECT star FROM user WHERE userIdx = #{userIdx}")
     int getStar(@Param("userIdx") final int userIdx);
 
+    /**
+     * star수 변경
+     * @param star
+     * @param userIdx
+     * @return
+     */
     @Update("Update user SET star=#{star} WHERE userIdx = #{userIdx}")
     int save_star(@Param("star") final int star, @Param("userIdx") final int userIdx);
 }
