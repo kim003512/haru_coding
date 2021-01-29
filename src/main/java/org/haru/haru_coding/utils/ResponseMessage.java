@@ -15,30 +15,14 @@ public class ResponseMessage {
     public static final String NO_QUESTION = "존재하지 않는 문제입니다.";
     public static final String CHANGE_ANWSER = "정답 상태를 변경하였습니다.";
     public static final String NOT_FOUND_QUESTION = "문제를 찾을 수 없습니다.";
+    public static final String NO_RANKING = "등록되어있는 랭킹이 없습니다.";
+    public static final String CREATED_RANKING = "랭킹이 등록되었습니다.";
+    public static final String READ_RANKING = "랭킹을 조회하였습니다.";
 
-    public static final String READ_REGISTER = "공고 조회 성공";
-    public static final String READ_LIKE_REGISTER = "좋아요 공고 조회 성공";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String POSSIBLE_NAME = "사용 가능한 이름입니다.";
-    public static final String NOT_FOUND_REGISTER = "공고를 찾을 수 없습니다.";
     public static final String CREATED_USER = "회원 가입 성공";
     public static final String UPDATE_USER = "회원 정보 수정 성공";
-    public static final String UPDATE_REGISTER = "공고 정보 수정 성공";
-    public static final String UPDATE_REGISTER_LOST = "실종 공고 수정 성공";
-    public static final String UPDATE_REGISTER_SPOT = "목격 공고 수정 성공";
-    public static final String UPDATE_REGISTER_LIKE = "목격 공고 수정 성공";
-    public static final String DELETE_USER = "회원 탈퇴 성공";
-    public static final String DELETE_REGISTER = "분양 공고 삭제 성공";
-    public static final String CREATED_REGISTER = "분양 공고 등록 성공";
-    public static final String CREATED_REGISTER_LIKE = "좋아요 공고 등록 성공";
-    public static final String CREATED_REGISTER_LOST = "실종 공고 등록 성공";
-    public static final String CREATED_REGISTER_SPOT = "목격 공고 등록 성공";
-
-    public static final String CREATED_REGISTER_IMG = "공고 이미지 등록 성공";
-
-    public static final String LIKE_CONTENT = "컨텐츠 좋아요/해제 성공";
-
-    public static final String SEARCH_REGISTER = "분양 공고 검색 성공";
 
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
 
