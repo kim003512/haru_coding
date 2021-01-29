@@ -4,10 +4,9 @@ import org.apache.ibatis.annotations.*;
 import org.haru.haru_coding.dto.User;
 import org.haru.haru_coding.dto.UserNotProfile;
 import org.haru.haru_coding.model.LoginReq;
-import org.haru.haru_coding.model.RankingRes;
+import org.haru.haru_coding.model.RankingRes_all;
 import org.haru.haru_coding.model.SignUpReq;
 import org.haru.haru_coding.model.UserChangeReq;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -84,7 +83,7 @@ public interface UserMapper {
      * @return
      */
     @Select("SELECT * FROM user ORDER BY star DESC")
-    List<RankingRes> listOfAllRanking();
+    List<RankingRes_all> listOfAllRanking();
 
     /**
      * 모든 프로그래머 수 조회

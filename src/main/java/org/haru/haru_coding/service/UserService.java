@@ -2,10 +2,9 @@ package org.haru.haru_coding.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.haru.haru_coding.dto.User;
-import org.haru.haru_coding.dto.UserNotProfile;
 import org.haru.haru_coding.mapper.UserMapper;
 import org.haru.haru_coding.model.DefaultRes;
-import org.haru.haru_coding.model.RankingRes;
+import org.haru.haru_coding.model.RankingRes_all;
 import org.haru.haru_coding.model.SignUpReq;
 import org.haru.haru_coding.model.UserChangeReq;
 import org.haru.haru_coding.utils.ResponseMessage;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -142,13 +140,13 @@ public class UserService {
      * @return
      */
     @Transactional
-    public DefaultRes<List<RankingRes>> RankingOfAllUsers(){
-        List<RankingRes> rankingRes = userMapper.listOfAllRanking();
+    public DefaultRes<List<RankingRes_all>> RankingOfAllUsers(){
+        List<RankingRes_all> rankingReAlls = userMapper.listOfAllRanking();
 
-        if(rankingRes.isEmpty())
+        if(rankingReAlls.isEmpty())
             return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER);
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, rankingRes);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, rankingReAlls);
     }
 
     @Transactional

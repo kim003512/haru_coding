@@ -6,12 +6,14 @@ import org.haru.haru_coding.mapper.QuestionMapper;
 import org.haru.haru_coding.mapper.UserMapper;
 import org.haru.haru_coding.model.AnsChangeReq;
 import org.haru.haru_coding.model.DefaultRes;
+import org.haru.haru_coding.model.WrongRes;
 import org.haru.haru_coding.utils.ResponseMessage;
 import org.haru.haru_coding.utils.StatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -120,14 +122,20 @@ public class QuestionService {
      */
     @Transactional
     public DefaultRes viewAllUserProblem(final int userIdx){
-        List<Problem> problemList = questionMapper.viewAllUserProblem(userIdx);
+        List<Integer> problemList = questionMapper.viewAllUserProblem(userIdx);
+
+        List<Integer> list = new ArrayList<Integer>();
+
+        for(int i = 0; i < problemList.size(); i++){
+            list.add(problemList.get(i));
+        }
 
         if(problemList == null){
             log.info("회원 오답 조회 실패");
             return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_QUESTION);
         } else{
             log.info("회원 오답 조회 성공");
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.FIND_QUESTION, problemList);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.FIND_QUESTION, list);
         }
     }
 }

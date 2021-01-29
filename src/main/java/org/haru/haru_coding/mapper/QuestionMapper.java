@@ -3,6 +3,7 @@ package org.haru.haru_coding.mapper;
 import org.apache.ibatis.annotations.*;
 import org.haru.haru_coding.dto.Problem;
 import org.haru.haru_coding.model.AnsChangeReq;
+import org.haru.haru_coding.model.WrongRes;
 
 import java.util.List;
 
@@ -41,8 +42,14 @@ public interface QuestionMapper {
     @Select("SELECT * FROM problem WHERE userIdx = #{userIdx} AND category = #{category}")
     List<Problem> viewAllUserProblem_category(@Param("userIdx") final int userIdx, @Param("category") final String category);
 
-    @Select("SELECT * FROM problem WHERE userIdx = #{userIdx}")
-    List<Problem> viewAllUserProblem(@Param("userIdx") final int userIdx);
+//    @Select("SELECT * FROM problem WHERE userIdx = #{userIdx}")
+//    List<Problem> viewAllUserProblem(@Param("userIdx") final int userIdx);
+
+    @Select("SELECT questIdx FROM problem WHERE userIdx = #{userIdx}")
+    List<Integer> viewAllUserProblem(@Param("userIdx") final int userIdx);
+
+//    @Select("SELECT * FROM problem WHERE userIdx = #{userIdx}")
+//    WrongRes viewAllUserProblem(@Param("userIdx") final int userIdx);
 
     /**
      * 같은 문제가 등록되어 있는지 확인

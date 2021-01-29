@@ -1,9 +1,8 @@
 package org.haru.haru_coding.api;
 
 import lombok.extern.slf4j.Slf4j;
-import org.haru.haru_coding.dto.User;
 import org.haru.haru_coding.model.DefaultRes;
-import org.haru.haru_coding.model.RankingRes;
+import org.haru.haru_coding.model.RankingRes_all;
 import org.haru.haru_coding.model.SignUpReq;
 import org.haru.haru_coding.model.UserChangeReq;
 import org.haru.haru_coding.service.JwtService;
@@ -120,7 +119,7 @@ public class UserController {
     public ResponseEntity getAllUserRaking(){
         try{
             log.info("모든 유저 랭킹 조회 성공");
-            DefaultRes<List<RankingRes>> defaultRes = userService.RankingOfAllUsers();
+            DefaultRes<List<RankingRes_all>> defaultRes = userService.RankingOfAllUsers();
 
             return new ResponseEntity<>(defaultRes, HttpStatus.OK);
         } catch (Exception e){
