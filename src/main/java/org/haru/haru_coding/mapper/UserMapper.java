@@ -85,6 +85,15 @@ public interface UserMapper {
     @Select("SELECT * FROM user ORDER BY star DESC")
     List<RankingRes_all> listOfAllRanking();
 
+    @Select("SELECT * FROM user ORDER BY javastar DESC")
+    List<RankingRes_all> listOfAllRanking_java();
+
+    @Select("SELECT * FROM user ORDER BY pythonstar DESC")
+    List<RankingRes_all> listOfAllRanking_python();
+
+    @Select("SELECT * FROM user ORDER BY cplusstar DESC")
+    List<RankingRes_all> listOfAllRanking_cplus();
+
     /**
      * 모든 프로그래머 수 조회
      * @return
@@ -100,6 +109,15 @@ public interface UserMapper {
     @Select("SELECT star FROM user WHERE userIdx = #{userIdx}")
     int getStar(@Param("userIdx") final int userIdx);
 
+    @Select("SELECT javastar FROM user WHERE userIdx = #{userIdx}")
+    int getJavaStar(@Param("userIdx") final int userIdx);
+
+    @Select("SELECT pythonstar FROM user WHERE userIdx = #{userIdx}")
+    int getPythonStar(@Param("userIdx") final int userIdx);
+
+    @Select("SELECT cplusstar FROM user WHERE userIdx = #{userIdx}")
+    int getCplusStar(@Param("userIdx") final int userIdx);
+
     /**
      * star수 변경
      * @param star
@@ -108,4 +126,13 @@ public interface UserMapper {
      */
     @Update("Update user SET star=#{star} WHERE userIdx = #{userIdx}")
     int save_star(@Param("star") final int star, @Param("userIdx") final int userIdx);
+
+    @Update("Update user SET javastar=#{javastar} WHERE userIdx=#{userIdx}")
+    int save_javastar(@Param("javastar") final int javastar, @Param("userIdx") final int userIdx);
+
+    @Update("Update user SET pythonstar=#{pythonstar} WHERE userIdx=#{userIdx}")
+    int save_pythonstar(@Param("pythonstar") final int pythonstar, @Param("userIdx") final int userIdx);
+
+    @Update("Update user SET cplusstar=#{cplusstar} WHERE userIdx=#{userIdx}")
+    int save_cplusstar(@Param("cplusstar") final int cplusstar, @Param("userIdx") final int userIdx);
 }

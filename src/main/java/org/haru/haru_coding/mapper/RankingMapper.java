@@ -3,6 +3,9 @@ package org.haru.haru_coding.mapper;
 import org.apache.ibatis.annotations.*;
 import org.haru.haru_coding.dto.Ranking;
 import org.haru.haru_coding.model.RankingReq_individual;
+import org.haru.haru_coding.model.RankingRes_all;
+import org.haru.haru_coding.model.RankingRes_individual;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -16,4 +19,7 @@ public interface RankingMapper {
 
     @Delete("DELETE FROM ranking WHERE userIdx = #{userIdx} AND rankingIdx = #{rankingIdx}")
     void deleteRanking(@Param("userIdx") final int userIdx, @Param("rankingIdx") final int rankingIdx);
+
+    @Select("SELECT userIdx FROM user WHERE category = #{category} ORDER BY star DESC")
+    List<Integer> listOfRanking(@Param("category") final String category);
 }

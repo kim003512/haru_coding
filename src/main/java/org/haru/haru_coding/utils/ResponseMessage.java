@@ -11,6 +11,11 @@ public class ResponseMessage {
     public static final String ALREADY_QUESTION = "이미 존재하는 문제입니다. 정답 상태를 변경해주세요.";
 
     public static final String CREATED_QUESTION = "문제를 추가하였습니다";
+
+    public static final String CREATED_QUESTION_JAVA = "JAVA 문제를 추가하였습니다";
+    public static final String CREATED_QUESTION_PYTHON = "PYTHON 문제를 추가하였습니다";
+    public static final String CREATED_QUESTION_CPLUS = "C++ 문제를 추가하였습니다";
+
     public static final String FIND_QUESTION = "문제를 조회하였습니다.";
     public static final String NO_QUESTION = "존재하지 않는 문제입니다.";
     public static final String CHANGE_ANWSER = "정답 상태를 변경하였습니다.";
@@ -18,6 +23,8 @@ public class ResponseMessage {
     public static final String NO_RANKING = "등록되어있는 랭킹이 없습니다.";
     public static final String CREATED_RANKING = "랭킹이 등록되었습니다.";
     public static final String READ_RANKING = "랭킹을 조회하였습니다.";
+
+    public static final String INSERT_WRONG_CATEGORY = "올바른 카테고리를 입력하세요.";
 
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String POSSIBLE_NAME = "사용 가능한 이름입니다.";

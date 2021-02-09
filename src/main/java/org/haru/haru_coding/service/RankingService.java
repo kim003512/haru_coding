@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,16 +47,29 @@ public class RankingService {
     }
 
     @Transactional
-    public DefaultRes get_ranking(final int userIdx, final String category){
-        List<Ranking> rankingList = rankingMapper.ranking_category(userIdx, category);
+    public DefaultRes get_ranking(final int userIdx, final String category) {
+        //List<Ranking> rankingList = rankingMapper.ranking_category(userIdx, category);
+        List<Integer> rankingList = rankingMapper.listOfRanking(category);
 
-        try{
-            if(rankingList != null){
+
+        try {
+            if (rankingList != null) {
+                for (int i = 1; i <= rankingList.size(); i++) {
+                    List<Integer> ranking = new ArrayList<>(i);
+                    ranking.add(i);
+
+                    ArrayList<Integer>[][] myRanking = new ArrayList[rankingList.size()][ranking.size()];
+                    for(int j = 1; j <= ranking.size(); j++){
+                        myRanking[i][j].add(rankingList.get(i), ranking.get(j));
+
+                        log.info(String.valueOf(myRanking));
+                    }
+                }
                 return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_RANKING, rankingList);
-            } else{
+            } else {
                 return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.NO_RANKING);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             log.error(e.getMessage());
             return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);

@@ -56,7 +56,7 @@ public class QuestionController {
                 log.error(e.getMessage());
                 return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }else{
+        } else{
             return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.UNAUTHORIZED);
         }
     }

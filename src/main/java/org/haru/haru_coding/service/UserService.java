@@ -1,6 +1,7 @@
 package org.haru.haru_coding.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.haru.haru_coding.dto.Ranking;
 import org.haru.haru_coding.dto.User;
 import org.haru.haru_coding.mapper.UserMapper;
 import org.haru.haru_coding.model.DefaultRes;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -140,13 +142,14 @@ public class UserService {
      * @return
      */
     @Transactional
-    public DefaultRes<List<RankingRes_all>> RankingOfAllUsers(){
+    public DefaultRes<List<RankingRes_all>> RankingOfAllUsers() {
         List<RankingRes_all> rankingReAlls = userMapper.listOfAllRanking();
 
-        if(rankingReAlls.isEmpty())
+        if (rankingReAlls.isEmpty())
             return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER);
-
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, rankingReAlls);
+        else {
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, rankingReAlls);
+        }
     }
 
     @Transactional
