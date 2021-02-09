@@ -8,6 +8,6 @@ public class Ranking {
     private int userIdx;
     private int rankingIdx;
     private int rankingnum;
-    private Date rankingdate;
+    private String rankingdate;
     private String category;
 }

@@ -7,6 +7,6 @@ import java.sql.Date;
 public class RankingReq_individual {
     private int userIdx;
     private int rankingnum;
-    private Date rankingdate;
+    private String rankingdate;
     private String category;
 }

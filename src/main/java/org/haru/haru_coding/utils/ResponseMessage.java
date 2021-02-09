@@ -16,6 +16,11 @@ public class ResponseMessage {
     public static final String CREATED_QUESTION_PYTHON = "PYTHON 문제를 추가하였습니다";
     public static final String CREATED_QUESTION_CPLUS = "C++ 문제를 추가하였습니다";
 
+    public static final String UPDATE_RANKING = "랭킹을 업데이트했습니다.";
+    public static final String GET_RANKING_JAVA = "JAVA 랭킹을 가져왔습니다.";
+    public static final String GET_RANKING_PYTHON = "PYTHON 랭킹을 가져왔습니다.";
+    public static final String GET_RANKING_C = "C 랭킹을 가져왔습니다.";
+
     public static final String FIND_QUESTION = "문제를 조회하였습니다.";
     public static final String NO_QUESTION = "존재하지 않는 문제입니다.";
     public static final String CHANGE_ANWSER = "정답 상태를 변경하였습니다.";

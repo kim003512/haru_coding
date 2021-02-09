@@ -27,36 +27,58 @@ public class RankingController {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("ranking")
-    public ResponseEntity ranking_registe(
-            @RequestHeader(value = "Authorization") String token,
-            @RequestBody final RankingReq_individual rankingReqIndividual){
-        int userIdx = jwtService.decode(token).getUser_idx();
-        DefaultRes user = userService.findUser(userIdx);
+//    @PostMapping("ranking")
+//    public ResponseEntity ranking_registe(
+//            @RequestHeader(value = "Authorization") String token,
+//            @RequestBody final RankingReq_individual rankingReqIndividual){
+//        int userIdx = jwtService.decode(token).getUser_idx();
+//        DefaultRes user = userService.findUser(userIdx);
+//
+//        if(user != null){
+//            try{
+//                rankingReqIndividual.setUserIdx(userIdx);
+//                return new ResponseEntity<>(rankingService.register_ranking(rankingReqIndividual), HttpStatus.OK);
+//            } catch (Exception e){
+//                log.error(e.getMessage());
+//                return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        } else{
+//            return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+//
+//    @GetMapping("ranking")
+//    public ResponseEntity get_ranking
+//            (@RequestHeader(value = "Authorization") String token, @RequestBody final String category){
+//        int userIdx = jwtService.decode(token).getUser_idx();
+//        DefaultRes user = userService.findUser(userIdx);
+//
+//        if(user != null){
+//            try{
+//                return new ResponseEntity<>(rankingService.get_ranking(userIdx, category), HttpStatus.OK);
+//            } catch (Exception e){
+//                log.error(e.getMessage());
+//                return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        } else{
+//            return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
-        if(user != null){
-            try{
-                rankingReqIndividual.setUserIdx(userIdx);
-                return new ResponseEntity<>(rankingService.register_ranking(rankingReqIndividual), HttpStatus.OK);
-            } catch (Exception e){
-                log.error(e.getMessage());
-                return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        } else{
-            return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.UNAUTHORIZED);
-        }
+    @PutMapping("ranking")
+    public ResponseEntity set_ranking(){
+        return new ResponseEntity<>(rankingService.set_ranking(), HttpStatus.OK);
     }
 
     @GetMapping("ranking")
-    public ResponseEntity get_ranking
-            (@RequestHeader(value = "Authorization") String token, @RequestBody final String category){
+    public ResponseEntity get_ranking(@RequestHeader(value = "Authorization") String token, @RequestBody final String category){
         int userIdx = jwtService.decode(token).getUser_idx();
         DefaultRes user = userService.findUser(userIdx);
 
         if(user != null){
             try{
                 return new ResponseEntity<>(rankingService.get_ranking(userIdx, category), HttpStatus.OK);
-            } catch (Exception e){
+            }catch (Exception e){
                 log.error(e.getMessage());
                 return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
             }

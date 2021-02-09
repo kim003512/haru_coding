@@ -70,6 +70,7 @@ public class UserService {
     public DefaultRes findByName(final String name){
         final User user = userMapper.findByName(name);
         try{
+
             if(user==null){
                 return DefaultRes.res(StatusCode.OK, ResponseMessage.POSSIBLE_NAME);
             } else {
