@@ -6,7 +6,6 @@ import org.haru.haru_coding.mapper.QuestionMapper;
 import org.haru.haru_coding.mapper.UserMapper;
 import org.haru.haru_coding.model.AnsChangeReq;
 import org.haru.haru_coding.model.DefaultRes;
-import org.haru.haru_coding.model.WrongRes;
 import org.haru.haru_coding.utils.ResponseMessage;
 import org.haru.haru_coding.utils.StatusCode;
 import org.springframework.stereotype.Service;
@@ -32,57 +31,122 @@ public class QuestionService {
      * @param problem
      * @return
      */
+//    @Transactional
+//    public DefaultRes register_quest(final int userIdx, final Problem problem){
+//        Problem exist_problem = questionMapper.findSameProblem(userIdx, problem.getQuest(), problem.getCategory());
+//        int star = userMapper.getStar(userIdx);
+//        int javaStar = userMapper.getJavaStar(userIdx);
+//        int pythonStar = userMapper.getPythonStar(userIdx);
+//        int cplusStar = userMapper.getCplusStar(userIdx);
+//
+//        try{
+//            log.info("1");
+//            if(exist_problem == null){
+//                log.info("2");
+//                if(problem.getCategory() == "java"){
+//                    log.info("자바");
+//                    if(problem.getAnswer() == 0) userMapper.save_javastar(javaStar+1, userIdx);
+//                    else if(problem.getAnswer() == 1) userMapper.save_star(javaStar+3, userIdx);
+//
+//                    int javaStar_again = userMapper.getJavaStar(userIdx);
+//
+//                    userMapper.save_star(star+javaStar_again, userIdx);
+//
+//                    questionMapper.save_problem(problem);
+//                    log.info("JAVA 문제를 추가하였습니다.");
+//                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_JAVA);
+//                } else if(problem.getCategory() == "python"){
+//                    log.info("파이썬");
+//                    if(problem.getAnswer() == 0) userMapper.save_pythonstar(pythonStar+1, userIdx);
+//                    else if(problem.getAnswer() == 1) userMapper.save_pythonstar(pythonStar+3, userIdx);
+//
+//                    int pythonStar_again = userMapper.getPythonStar(userIdx);
+//
+//                    userMapper.save_star(star+pythonStar_again, userIdx);
+//
+//                    questionMapper.save_problem(problem);
+//                    log.info("PYTHON 문제를 추가하였습니다.");
+//                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_PYTHON);
+//                } else if(problem.getCategory() == "cplus"){
+//                    log.info("씨쁠");
+//                    if(problem.getAnswer() == 0) userMapper.save_cplusstar(cplusStar+1, userIdx);
+//                    else if(problem.getAnswer() == 1) userMapper.save_cplusstar(cplusStar+3, userIdx);
+//
+//                    int cplusStar_again = userMapper.getJavaStar(userIdx);
+//
+//                    userMapper.save_star(star+cplusStar_again, userIdx);
+//
+//                    questionMapper.save_problem(problem);
+//                    log.info("CPLUS 문제를 추가하였습니다.");
+//                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_CPLUS);
+//                }
+//                else{
+//                    log.info("wrong 카테");
+//                    return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.INSERT_WRONG_CATEGORY);
+//                }
+//            } else {
+//                log.info("이미 등록된 문제");
+//                return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.ALREADY_QUESTION);
+//            }
+//        } catch (Exception e) {
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            log.error(e.getMessage());
+//            return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
+//        }
+//    }
+
     @Transactional
-    public DefaultRes register_quest(final int userIdx, final Problem problem){
-        Problem exist_problem = questionMapper.findSameProblem(userIdx, problem.getQuest(), problem.getCategory());
-        int star = userMapper.getStar(userIdx);
-        int javaStar = userMapper.getJavaStar(userIdx);
-        int pythonStar = userMapper.getPythonStar(userIdx);
-        int cplusStar = userMapper.getCplusStar(userIdx);
+    public DefaultRes save_problem(final int userIdx, final Problem problem){
+        Problem sameProblem = questionMapper.findSameProblem(userIdx, problem.getQuest(), problem.getCategory());
+        int getUserStar = userMapper.getStar(userIdx);
+        int getJavaStar = userMapper.getJavaStar(userIdx);
+        int getPythonStar = userMapper.getPythonStar(userIdx);
+        int getCStar = userMapper.getCplusStar(userIdx);
 
         try{
-            if(exist_problem == null){
-                if(problem.getCategory() == "java"){
-                    if(problem.getAnswer() == 0) userMapper.save_javastar(javaStar+1, userIdx);
-                    else if(problem.getAnswer() == 1) userMapper.save_star(javaStar+3, userIdx);
+            if(sameProblem == null){
+                if(problem.getCategory().equals("java")){
+                    log.info("자바 문제 등록");
+                    if(problem.getAnswer() == 0) userMapper.save_javastar(getJavaStar+1, userIdx);
+                    else if(problem.getAnswer() == 1) userMapper.save_javastar(getJavaStar+3, userIdx);
 
-                    int javaStar_again = userMapper.getJavaStar(userIdx);
+                    int getJavaStar_again = userMapper.getJavaStar(userIdx);
 
-                    userMapper.save_star(star+javaStar_again, userIdx);
-
+                    userMapper.save_star(getJavaStar_again+getPythonStar+getCStar, userIdx);
                     questionMapper.save_problem(problem);
-                    log.info("JAVA 문제를 추가하였습니다.");
-                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_JAVA);
-                } else if(problem.getCategory() == "python"){
-                    if(problem.getAnswer() == 0) userMapper.save_pythonstar(pythonStar+1, userIdx);
-                    else if(problem.getAnswer() == 1) userMapper.save_pythonstar(pythonStar+3, userIdx);
 
-                    int pythonStar_again = userMapper.getPythonStar(userIdx);
+                    return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_QUESTION_JAVA);
+                } else if(problem.getCategory().equals("python")){
+                    log.info("파이썬 문제 등록");
+                    if(problem.getAnswer() == 0) userMapper.save_pythonstar(getPythonStar+1, userIdx);
+                    else if(problem.getAnswer() == 1) userMapper.save_pythonstar(getPythonStar+3, userIdx);
 
-                    userMapper.save_star(star+pythonStar_again, userIdx);
+                    int getPythonStar_again = userMapper.getPythonStar(userIdx);
 
+                    userMapper.save_star(getJavaStar+getPythonStar_again+getCStar, userIdx);
                     questionMapper.save_problem(problem);
-                    log.info("PYTHON 문제를 추가하였습니다.");
-                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_PYTHON);
-                } else if(problem.getCategory() == "cplus"){
-                    if(problem.getAnswer() == 0) userMapper.save_cplusstar(cplusStar+1, userIdx);
-                    else if(problem.getAnswer() == 1) userMapper.save_cplusstar(cplusStar+3, userIdx);
 
-                    int cplusStar_again = userMapper.getJavaStar(userIdx);
+                    return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_QUESTION_PYTHON);
+                } else if(problem.getCategory().equals("cplus")){
+                    log.info("씨 문제 등록");
+                    if(problem.getAnswer() == 0) userMapper.save_cplusstar(getCStar+1, userIdx);
+                    else if(problem.getAnswer() == 1) userMapper.save_cplusstar(getCStar+3, userIdx);
 
-                    userMapper.save_star(star+cplusStar_again, userIdx);
+                    int getCStar_again = userMapper.getCplusStar(userIdx);
 
+                    userMapper.save_star(getJavaStar+getPythonStar+getCStar_again, userIdx);
                     questionMapper.save_problem(problem);
-                    log.info("CPLUS 문제를 추가하였습니다.");
-                    return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_QUESTION_CPLUS);
+
+                    return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_QUESTION_CPLUS);
                 } else{
-                    return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.INSERT_WRONG_CATEGORY);
+                    log.info("올바르지 않은 카테고리");
+                    return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.INSERT_WRONG_CATEGORY);
                 }
-            } else {
-                log.info("이미 등록된 문제");
-                return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.ALREADY_QUESTION);
+            } else{
+                log.info("문제 등록 실패_이미 존재하는 문제");
+                return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.ALREADY_QUESTION);
             }
-        } catch (Exception e) {
+        } catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             log.error(e.getMessage());
             return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);

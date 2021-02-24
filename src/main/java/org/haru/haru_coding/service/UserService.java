@@ -49,18 +49,19 @@ public class UserService {
 
     @Transactional
     public DefaultRes save_user(SignUpReq signUpReq){
-        try{
-            if(signUpReq.getProfile() != null)
-                signUpReq.setProfileUrl(s3FileUploadService.upload(signUpReq.getProfile()));
-
-            userMapper.save_user(signUpReq);
-            return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_USER);
-        } catch (Exception e){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            log.error(e.getMessage());
-            return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
-        }
+           try{
+               if(signUpReq.getProfile() != null)
+                   signUpReq.setProfileUrl(s3FileUploadService.upload(signUpReq.getProfile()));
+               userMapper.save_user(signUpReq);
+               return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_USER);
+           } catch (Exception e){
+               TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+               log.error(e.getMessage());
+               return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
+           }
     }
+
+
 
     /**
      * 이름 중복 확인
@@ -102,22 +103,29 @@ public class UserService {
 
     public DefaultRes update_user(final int userIdx, final UserChangeReq userChangeReq){
         UserChangeReq user = userMapper.findByUidx_userchange(userIdx);
+        User exist_name = null;
+        if(userChangeReq.getName() != null){
+            exist_name = userMapper.findByName(userChangeReq.getName());
+        }
 
+        if(exist_name != null){
+            return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.ALREADY_USER);
+        } else{
+            if(userMapper.findByUidx(userIdx) != null){
+                if(userChangeReq.getName() != null){
+                    String name = userMapper.findByName_same(userChangeReq.getName());
 
-        if(userMapper.findByUidx(userIdx) != null){
-            if(userChangeReq.getName() != null){
-                String name = userMapper.findByName_same(userChangeReq.getName());
+                    if(name != null) return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.ALREADY_USER);
+                }
+                if(userChangeReq.getName() == null) userChangeReq.setName(userMapper.findByUidx(userIdx).getName());
+                if(userChangeReq.getPw() == null) userChangeReq.setPw(userMapper.findByUidx(userIdx).getPw());
+                if(userChangeReq.getEmail() == null) userChangeReq.setEmail(userMapper.findByUidx(userIdx).getEmail());
+                if(userChangeReq.getStar() == null) userChangeReq.setStar(String.valueOf(userMapper.findByUidx(userIdx).getStar()));
 
-                if(name != null) return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.ALREADY_USER);
+                userMapper.updateUser(userIdx, userChangeReq);
+
+                return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER);
             }
-            if(userChangeReq.getName() == null) userChangeReq.setName(userMapper.findByUidx(userIdx).getName());
-            if(userChangeReq.getPw() == null) userChangeReq.setPw(userMapper.findByUidx(userIdx).getPw());
-            if(userChangeReq.getEmail() == null) userChangeReq.setEmail(userMapper.findByUidx(userIdx).getEmail());
-            if(userChangeReq.getStar() == null) userChangeReq.setStar(String.valueOf(userMapper.findByUidx(userIdx).getStar()));
-
-            userMapper.updateUser(userIdx, userChangeReq);
-
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER);
         }
         return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
     }

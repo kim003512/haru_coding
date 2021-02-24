@@ -11,10 +11,14 @@ import java.util.List;
 public interface QuestionMapper {
     /**
      * 문제 등록
-     * @param problem
+     * @param
      * @return
      */
-    @Insert("INSERT INTO problem(userIdx, quest, answer, category) VALUES (#{problem.userIdx}, #{problem.quest}, #{problem.answer}, #{problem.category})")
+//    @Insert("INSERT INTO problem(userIdx, quest, answer, category) VALUES (#{problem.userIdx}, #{problem.quest}, #{problem.answer}, #{problem.category})")
+//    int save_problem(@Param("problem") final Problem problem);
+//    @Insert("INSERT INTO problem(userIdx, quest, answer, category, choiceAns) VALUES (#{problem.userIdx}, #{problem.quest}, #{problem.answer}, #{problem.category}, #{problem.choiceAns})")
+//    int save_problem(@Param("problem") final Problem problem);
+    @Insert("INSERT INTO problem(userIdx, quest, answer, category, choiceAns) VALUES(#{problem.userIdx}, #{problem.quest}, #{problem.answer}, #{problem.category}, #{problem.choiceAns})")
     int save_problem(@Param("problem") final Problem problem);
 
     /**
@@ -30,7 +34,7 @@ public interface QuestionMapper {
      * @param ansChangeReq
      * @return
      */
-    @Update("UPDATE problem set answer = #{ansChangeReq.answer} WHERE userIdx=#{ansChangeReq.userIdx} AND quest=#{ansChangeReq.quest} AND category=#{ansChangeReq.category}")
+    @Update("UPDATE problem set answer = #{ansChangeReq.answer} AND choiceAns = #{ansChangeReq.choiceAns} WHERE userIdx=#{ansChangeReq.userIdx} AND quest=#{ansChangeReq.quest} AND category=#{ansChangeReq.category}")
     int change_answer(@Param("ansChangeReq") final AnsChangeReq ansChangeReq);
 
 

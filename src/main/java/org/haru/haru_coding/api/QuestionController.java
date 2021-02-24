@@ -35,23 +35,44 @@ public class QuestionController {
         this.questionMapper = questionMapper;
     }
 
-    /**
-     * 문제 등록
-     * @param token
-     * @param problem
-     * @return
-     */
+//    /**
+//     * 문제 등록
+//     * @param token
+//     * @param problem
+//     * @return
+//     */
+//    @PostMapping("question")
+//    public ResponseEntity register_quest(
+//            @RequestHeader(value = "Authorization") String token,
+//            @RequestBody final Problem problem){
+//        int userIdx = jwtService.decode(token).getUser_idx();
+//        User user = userMapper.findByUidx(userIdx); //존재하는 유저인지 확인
+//
+//        if(user != null){
+//            try{
+//                log.info(problem.getCategory());
+//                problem.setUserIdx(userIdx);
+//                return new ResponseEntity<>(questionService.register_quest(userIdx, problem), HttpStatus.OK);
+//            } catch (Exception e){
+//                log.error(e.getMessage());
+//                return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        } else{
+//            return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+
     @PostMapping("question")
-    public ResponseEntity register_quest(
+    public ResponseEntity save_problem(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody final Problem problem){
         int userIdx = jwtService.decode(token).getUser_idx();
-        User user = userMapper.findByUidx(userIdx); //존재하는 유저인지 확인
+        DefaultRes user= userService.findUser(userIdx);
 
         if(user != null){
             try{
                 problem.setUserIdx(userIdx);
-                return new ResponseEntity<>(questionService.register_quest(userIdx, problem), HttpStatus.OK);
+                return new ResponseEntity<>(questionService.save_problem(userIdx, problem), HttpStatus.OK);
             } catch (Exception e){
                 log.error(e.getMessage());
                 return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);

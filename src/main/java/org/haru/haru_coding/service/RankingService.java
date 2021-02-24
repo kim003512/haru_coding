@@ -4,13 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.haru.haru_coding.dto.Ranking;
 import org.haru.haru_coding.mapper.RankingMapper;
 import org.haru.haru_coding.model.DefaultRes;
-import org.haru.haru_coding.model.RankingReq_individual;
 import org.haru.haru_coding.utils.ResponseMessage;
 import org.haru.haru_coding.utils.StatusCode;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -82,7 +80,9 @@ public class RankingService {
 //    }
 
     @Transactional
+    @Scheduled(cron = "0 0 1 * * *")
     public DefaultRes set_ranking(){
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
         String now_dt = format.format(now);

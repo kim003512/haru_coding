@@ -8,4 +8,5 @@ public class AnsChangeReq {
     private String category;
     private int quest;
     private int answer;
+    private int choiceAns;
 }
